@@ -538,7 +538,7 @@
                    
                     <a href="https://www.instagram.com/00_naseer_47?igsh=MTd1MDA0OHgzd2tmZQ==" class="social-icon"><i class="fab fa-instagram text-none "></i></a>
                 </div>
-                <p style="margin-top: 20px;">Made with <i class="fas fa-heart" style="color: #FF6B35;"></i> for Makar Shankranthi</p>
+                <p style="margin-top: 20px;">Made with <i class="fas fa-heart" style="color: #FF6B35;"></i> for <span id="name"></span></p>
             </footer>
         </div>
     </div>
@@ -559,7 +559,7 @@
         const createWishesBtn = document.getElementById('create-wishes-btn');
         const displayNameElement = document.getElementById('display-name');
         const greetingNameElement = document.getElementById('greeting-name');
-
+        const footname=document.getElementById('name')
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             // Focus on input field
@@ -608,7 +608,7 @@
             friendName = inputName;
             displayNameElement.textContent = friendName;
             greetingNameElement.textContent = friendName;
-            
+            footname.textContent=friendName;
             // Animate transition
             gsap.to(nameInputScreen, {
                 opacity: 0,
