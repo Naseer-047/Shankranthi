@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Makar Shankranthi Wishes</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Playfair+Display:wght@700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0569ff;
+            --secondary-color: #FFD166;
+            --accent-color: #0c008c;
+            --dark-color: #073B4C;
+            --light-color: #F8F9FA;
+            --glass-color: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0c2461 0%, #1e3799 50%, #4a69bd 100%);
+            color: var(--light-color);
+            overflow-x: hidden;
+            min-height: 100vh;
+            cursor: none;
+        }
+
+        /* Name Input Screen */
+        #name-input-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            background: linear-gradient(135deg, #0c2461 0%, #1e3799 50%, #4a69bd 100%);
+        }
+
+        .input-container {
+            background: var(--glass-color);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .input-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, #ff8800, #8157c4, #ff00fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .input-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 20px 30px;
+            font-size: 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--glass-border);
+            border-radius: 50px;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 30px rgba(6, 214, 160, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .submit-btn {
+            padding: 18px 50px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            color: rgb(255, 255, 255);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .input-hint {
+            margin-top: 20px;
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        /* Wishes Page (Hidden Initially) */
+        #wishes-page {
+            display: none;
+            opacity: 0;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: rgba(255, 107, 53, 0.8);
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid rgba(6, 214, 160, 0.4);
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.6s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 40px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .glass-card {
+            background: var(--glass-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+            padding: 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color), var(--secondary-color));
+        }
+
+        header {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #FFD166, #FF6B35, #06D6A0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .friend-name {
+            color: var(--secondary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 2.2rem;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 10px;
+            background: rgba(255, 209, 102, 0.15);
+            border: 1px solid rgba(255, 209, 102, 0.3);
+        }
+
+        .wishes-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .wish-text {
+            font-size: 1.4rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+            text-align: justify;
+        }
+
+        .festival-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .festival-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .festival-icon {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+        }
+
+        .festival-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            animation: floatElement 8s infinite ease-in-out;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 70px;
+            height: 70px;
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 2s;
+        }
+
+        @keyframes floatElement {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .liquid-effect {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, rgba(6, 214, 160, 0.2), transparent);
+            border-radius: 50% 50% 0 0;
+            z-index: -1;
+        }
+
+        .festival-greeting {
+            text-align: center;
+            font-size: 2.5rem;
+            margin: 40px 0;
+            font-weight: 700;
+            padding: 20px;
+            background: linear-gradient(45deg, rgba(255, 107, 53, 0.2), rgba(6, 214, 160, 0.2));
+            border-radius: 20px;
+            border-left: 5px solid var(--primary-color);
+            border-right: 5px solid var(--accent-color);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 60px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .social-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--light-color);
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        @media (max-width: 992px) {
+            .wishes-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title {
+                font-size: 3.5rem;
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+            
+            .input-title {
+                font-size: 2.8rem;
+            }
+            
+            .input-container {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.8rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .wish-text {
+                font-size: 1.2rem;
+            }
+            
+            .festival-greeting {
+                font-size: 1.8rem;
+            }
+            
+            .cursor, .cursor-follower {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+            
+            .input-title {
+                font-size: 2.2rem;
+            }
+            
+            .input-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .input-field {
+                font-size: 1.2rem;
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Name Input Screen -->
+    <div id="name-input-screen">
+        <div class="input-container">
+            <h1 class="input-title">Makar Shankranthi Wishes</h1>
+            <p class="input-subtitle"> Please Enter your Name</p>
+            
+            <input type="text" class="input-field" id="friend-name-input" 
+                   placeholder="Enter your friend's name" autocomplete="off" autofocus>
+            
+            <button class="submit-btn" id="create-wishes-btn">
+                <i class="fas fa-magic" style="margin-right: 10px;"></i>
+                Create Magical Wishes
+            </button>
+            
+            <p class="input-hint">Press Enter after typing the name</p>
+        </div>
+    </div>
+
+    
+    <div id="wishes-page">
+       
+        <div class="cursor"></div>
+        <div class="cursor-follower"></div>
+
+
+        <div id="canvas-container"></div>
+
+
+        <div class="liquid-effect"></div>
+
+
+        <div class="container">
+            <header>
+                <h1 class="main-title">Makar Shankranthi</h1>
+                <p class="subtitle">A Festival of Harvest and New Beginnings</p>
+                <div class="glass-card">
+                    <h2>Warm Wishes for <span class="friend-name" id="display-name">Friend</span></h2>
+                </div>
+            </header>
+
+            <div class="wishes-section">
+                <div class="glass-card">
+                    <div class="floating-elements">
+                        <div class="floating-element"></div>
+                        <div class="floating-element"></div>
+                        <div class="floating-element"></div>
+                    </div>
+                    <p class="wish-text">May this Makar Shankranthi bring you abundant joy, prosperity, and success. As the sun moves to the northern hemisphere, may it brighten your life with warmth and positivity.</p>
+                    <p class="wish-text">On this auspicious day, may you be blessed with good health, happiness, and the company of loved ones. Let's celebrate the harvest of goodwill and sow seeds of harmony and peace.</p>
+                    <p class="wish-text">May the sweetness of til-gul fill your life with sweetness and the flying kites take your worries away, bringing new hopes and aspirations for the coming year.</p>
+                </div>
+
+                <div class="festival-info">
+                    <div class="glass-card festival-item">
+                        <div class="festival-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="festival-text">
+                            <h3>Sun's Transition</h3>
+                            <p>Makar Sankranti marks the sun's transition into Makara (Capricorn), signaling the end of winter.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card festival-item">
+                        <div class="festival-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div class="festival-text">
+                            <h3>Traditional Foods</h3>
+                            <p>Enjoy til-gul (sesame and jaggery sweets), puran poli, and seasonal harvest foods.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-card festival-item">
+                        <div class="festival-icon">
+                            <i class="fas fa-kite"></i>
+                        </div>
+                        <div class="festival-text">
+                            <h3>Kite Flying</h3>
+                            <p>The sky comes alive with colorful kites, symbolizing spirits soaring to new heights.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="festival-greeting">
+                <i class="fas fa-heart" style="color: #FF6B35; margin-right: 15px;"></i>
+                Happy Makar Shankranthi, <span id="greeting-name">Friend</span>!
+                <i class="fas fa-heart" style="color: #06D6A0; margin-left: 15px;"></i>
+            </div>
+
+            <footer>
+                <p>Wishing you and your family a blessed Makar Shankranthi filled with joy and prosperity!</p>
+                <div class="social-icons">
+                    
+                    
+                   
+                    <a href="https://www.instagram.com/00_naseer_47?igsh=MTd1MDA0OHgzd2tmZQ==" class="social-icon"><i class="fab fa-instagram text-none "></i></a>
+                </div>
+                <p style="margin-top: 20px;">Made with <i class="fas fa-heart" style="color: #FF6B35;"></i> for Makar Shankranthi</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    
+    <script>
+        // Global variables
+        let friendName = "Makar";
+        let scene, camera, renderer, particles;
+        
+        // DOM Elements
+        const nameInputScreen = document.getElementById('name-input-screen');
+        const wishesPage = document.getElementById('wishes-page');
+        const friendNameInput = document.getElementById('friend-name-input');
+        const createWishesBtn = document.getElementById('create-wishes-btn');
+        const displayNameElement = document.getElementById('display-name');
+        const greetingNameElement = document.getElementById('greeting-name');
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Focus on input field
+            friendNameInput.focus();
+            
+            // Handle Enter key in input field
+            friendNameInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    createWishes();
+                }
+            });
+            
+            // Handle button click
+            createWishesBtn.addEventListener('click', createWishes);
+            
+            // Add floating animation to input container
+            gsap.to('.input-container', {
+                y: -10,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut"
+            });
+        });
+
+        // Create wishes function
+        function createWishes() {
+            const inputName = friendNameInput.value.trim();
+            
+            if (!inputName) {
+                // Add shake animation if input is empty
+                gsap.to(friendNameInput, {
+                    x: 10,
+                    duration: 0.1,
+                    repeat: 5,
+                    yoyo: true,
+                    onComplete: () => {
+                        gsap.to(friendNameInput, { x: 0, duration: 0.1 });
+                        friendNameInput.focus();
+                    }
+                });
+                return;
+            }
+            
+            // Set friend name
+            friendName = inputName;
+            displayNameElement.textContent = friendName;
+            greetingNameElement.textContent = friendName;
+            
+            // Animate transition
+            gsap.to(nameInputScreen, {
+                opacity: 0,
+                duration: 0.8,
+                onComplete: () => {
+                    nameInputScreen.style.display = 'none';
+                    wishesPage.style.display = 'block';
+                    
+                    // Initialize the wishes page
+                    initWishesPage();
+                }
+            });
+        }
+
+        // Initialize wishes page
+        function initWishesPage() {
+            // Initialize Three.js
+            initThreeJS();
+            
+            // Initialize custom cursor
+            initCustomCursor();
+            
+            // Animate page entrance
+            gsap.to(wishesPage, {
+                opacity: 1,
+                duration: 1,
+                onComplete: () => {
+                    // Start page animations
+                    initAnimations();
+                }
+            });
+        }
+
+        // Custom Cursor
+        function initCustomCursor() {
+            const cursor = document.querySelector('.cursor');
+            const cursorFollower = document.querySelector('.cursor-follower');
+            
+            // Only enable on non-mobile
+            if (window.innerWidth > 768) {
+                document.addEventListener('mousemove', (e) => {
+                    cursor.style.left = e.clientX + 'px';
+                    cursor.style.top = e.clientY + 'px';
+                    
+                    setTimeout(() => {
+                        cursorFollower.style.left = e.clientX + 'px';
+                        cursorFollower.style.top = e.clientY + 'px';
+                    }, 100);
+                });
+                
+                // Cursor effects on interactive elements
+                const interactiveElements = document.querySelectorAll('.social-icon');
+                
+                interactiveElements.forEach(el => {
+                    el.addEventListener('mouseenter', () => {
+                        cursor.style.transform = 'scale(2)';
+                        cursorFollower.style.transform = 'scale(1.5)';
+                        cursorFollower.style.borderColor = 'rgba(255, 107, 53, 0.8)';
+                    });
+                    
+                    el.addEventListener('mouseleave', () => {
+                        cursor.style.transform = 'scale(1)';
+                        cursorFollower.style.transform = 'scale(1)';
+                        cursorFollower.style.borderColor = 'rgba(6, 214, 160, 0.4)';
+                    });
+                });
+            } else {
+                // Hide cursor on mobile
+                cursor.style.display = 'none';
+                cursorFollower.style.display = 'none';
+                document.body.style.cursor = 'auto';
+            }
+        }
+
+        // Three.js 3D Background
+        function initThreeJS() {
+            try {
+                scene = new THREE.Scene();
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                renderer = new THREE.WebGLRenderer({ 
+                    alpha: true, 
+                    antialias: true 
+                });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                document.getElementById('canvas-container').appendChild(renderer.domElement);
+                
+                // Create particle system
+                const particleCount = 600;
+                const particlesGeometry = new THREE.BufferGeometry();
+                const positions = new Float32Array(particleCount * 3);
+                const colors = new Float32Array(particleCount * 3);
+                
+                // Color palette for particles
+                const colorPalette = [
+                    new THREE.Color(0xFF6B35), // orange
+                    new THREE.Color(0x06D6A0), // teal
+                    new THREE.Color(0xFFD166), // yellow
+                    new THREE.Color(0x118AB2)  // blue
+                ];
+                
+                for (let i = 0; i < particleCount * 3; i += 3) {
+                    // Positions
+                    positions[i] = (Math.random() - 0.5) * 50;
+                    positions[i + 1] = (Math.random() - 0.5) * 30;
+                    positions[i + 2] = (Math.random() - 0.5) * 20;
+                    
+                    // Colors
+                    const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
+                    colors[i] = color.r;
+                    colors[i + 1] = color.g;
+                    colors[i + 2] = color.b;
+                }
+                
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+                
+                // Particle material
+                const particlesMaterial = new THREE.PointsMaterial({
+                    size: 0.12,
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.8,
+                    blending: THREE.AdditiveBlending
+                });
+                
+                particles = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particles);
+                
+                camera.position.z = 25;
+                
+                // Add ambient light
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+                
+                // Add directional light
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(10, 10, 5);
+                scene.add(directionalLight);
+                
+                // Add colored lights for more depth
+                const pointLight1 = new THREE.PointLight(0xFF6B35, 0.5, 50);
+                pointLight1.position.set(20, 10, 10);
+                scene.add(pointLight1);
+                
+                const pointLight2 = new THREE.PointLight(0x06D6A0, 0.5, 50);
+                pointLight2.position.set(-20, -10, 10);
+                scene.add(pointLight2);
+                
+                // Handle window resize
+                window.addEventListener('resize', onWindowResize);
+                
+                // Start animation
+                animate();
+            } catch (error) {
+                console.error("Three.js initialization error:", error);
+            }
+        }
+        
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        function animate() {
+            if (!renderer) return;
+            
+            requestAnimationFrame(animate);
+            
+            // Rotate particles
+            if (particles) {
+                particles.rotation.x += 0.001;
+                particles.rotation.y += 0.002;
+                
+                // Pulsating effect
+                const time = Date.now() * 0.001;
+                particles.scale.x = 1 + 0.1 * Math.sin(time);
+                particles.scale.y = 1 + 0.1 * Math.sin(time);
+                
+                // Move particles slightly
+                const positions = particles.geometry.attributes.position.array;
+                for (let i = 0; i < positions.length; i += 3) {
+                    positions[i] += Math.sin(time + positions[i]) * 0.001;
+                    positions[i + 1] += Math.cos(time + positions[i + 1]) * 0.001;
+                }
+                particles.geometry.attributes.position.needsUpdate = true;
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        // GSAP Animations
+        function initAnimations() {
+            // Animate elements on page load
+            gsap.from('.main-title', {
+                duration: 1.5,
+                y: 100,
+                opacity: 0,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.subtitle', {
+                duration: 1.2,
+                y: 50,
+                opacity: 0,
+                delay: 0.3,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.glass-card', {
+                duration: 1,
+                y: 50,
+                opacity: 0,
+                stagger: 0.2,
+                delay: 0.5,
+                ease: 'power3.out'
+            });
+            
+            gsap.from('.festival-greeting', {
+                duration: 1.2,
+                scale: 0.8,
+                opacity: 0,
+                delay: 1,
+                ease: 'back.out(1.7)'
+            });
+            
+            // Animate friend name with special effect
+            gsap.fromTo(['#display-name', '#greeting-name'], 
+                {
+                    scale: 0,
+                    rotation: -180,
+                    opacity: 0
+                },
+                {
+                    scale: 1,
+                    rotation: 0,
+                    opacity: 1,
+                    duration: 1.5,
+                    delay: 0.8,
+                    ease: 'elastic.out(1, 0.5)',
+                    stagger: 0.2
+                }
+            );
+            
+            // Floating animation for festival items
+            gsap.to('.festival-item', {
+                y: -10,
+                duration: 2,
+                repeat: -1,
+                yoyo: true,
+                ease: 'power1.inOut',
+                stagger: 0.2
+            });
+            
+            // Liquid effect animation
+            gsap.to('.liquid-effect', {
+                height: '250px',
+                duration: 3,
+                repeat: -1,
+                yoyo: true,
+                ease: 'power1.inOut'
+            });
+            
+            // Create confetti effect on load
+            createConfetti();
+        }
+        
+        // Confetti effect
+        function createConfetti() {
+            const colors = ['#FF6B35', '#06D6A0', '#FFD166', '#118AB2', '#EF476F'];
+            
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.cssText = `
+                    position: fixed;
+                    width: ${Math.random() * 10 + 5}px;
+                    height: ${Math.random() * 10 + 5}px;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    top: ${Math.random() * 100}vh;
+                    left: ${Math.random() * 100}vw;
+                    border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                    z-index: 9999;
+                    pointer-events: none;
+                `;
+                
+                document.body.appendChild(confetti);
+                
+                // Animate confetti falling
+                gsap.to(confetti, {
+                    y: '+=100vh',
+                    rotation: Math.random() * 360,
+                    opacity: 0,
+                    duration: Math.random() * 3 + 2,
+                    ease: 'power2.out',
+                    onComplete: () => confetti.remove()
+                });
+            }
+        }
+    </script>
+</body>
+</html>
